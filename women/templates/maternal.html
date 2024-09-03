@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="Utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>
+            Enciente !!
+        </title>
+    </head>
+    <body>
+    
+        <div class="login">
+            <h1 style ="color: black;"> Maternal risk</h1>
+            <form action="{{url_for('predict')}}"method="post">
+                <label for="Age">Age:</label>
+                <input type="number" class="form-control" id="Age" name="Age" min="13" max="50" placeholder="13 - 50 years" required="required"><br><br>
+                <label for="Age">Systolic Blood Pressure:</label>
+                <input type="number" class="form-control" id="SystolicBP" name="SystolicBP" min="50" max="200" placeholder="50 - 200 mmHg" required="required"><br><br>
+                <label for="Age">Diastolic Blood Pressure: </label>
+                <input type="number" class="form-control" id="DiastolicBP" name="DiastolicBP" min="50" max="200" placeholder="50 - 200 mmHg" required="required"><br><br>
+                <label for="Age">Blood Glucose Level: </label>
+                <input type="number" class="form-control" id="BS" name="BS" min="0.1" max="15" step="0.1" placeholder="0.1 - 15 mmol/L" required="required"><br><br>
+                <label for="Age">Body Temperature: </label>
+                <input type="number" class="form-control" id="BodyTemp" name="BodyTemp" min="34" max="41" step="0.1" placeholder="34 - 41 °C" required="required"><br><br>
+                <label for="Age">Heart rate: </label>
+                <input type="text" class="form-control" id="HeartRate" name="HeartRate" min="45" max="130" placeholder="45 - 130 bpm" value="{{value}}" required="required"><br><br>
+                
+                <button type ="submit" class ="btn btn-primary btn-block btn-large">Predict</button></p><br>
+            </form> <br>
+            
+        <br>
+    
+        {% if sush==1 %}
+        <p>Low Risk</p>
+         {% elif sush==2 %} 
+        <p>Mid Risk</p>
+        {% elif sush==3 %}
+        <p>High Risk</p>
+        {% endif %}
+         <p>
+           </div>    </body> </html>
+           <style>
+             @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@500&display=swap');
+             .login{
+                background: rgba( 255, 255, 255, 0.35 );
+box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+backdrop-filter: blur( 11px );
+-webkit-backdrop-filter: blur( 11px );
+border-radius: 10px;
+border: 1px solid rgba( 255, 255, 255, 0.18 );
+text-align: center;
+width:500px;
+  left:500px;
+  top:40px;
+  position: fixed;
+             }
+             .form-control{
+                background: rgba( 255, 255, 255, 0.35 );
+box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+backdrop-filter: blur( 11px );
+-webkit-backdrop-filter: blur( 11px );
+border-radius: 10px;
+border: 1px solid rgba( 255, 255, 255, 0.18 );
+             }
+            body{
+                background-image: url("https://images.pexels.com/photos/7116587/pexels-photo-7116587.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2");
+  font-family: 'Raleway', sans-serif;
+  
+background-attachment: fixed;
+   
+-webkit-animation: AnimationName 50s ease infinite;
+    animation: AnimationName 50s ease infinite;
+}
+button[type="submit"]{
+    background: rgba( 255, 255, 255, 0.35 );
+box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+backdrop-filter: blur( 11px );
+-webkit-backdrop-filter: blur( 11px );
+border-radius: 10px;
+border: 1px solid rgba( 255, 255, 255, 0.18 );
+}
+@-webkit-keyframes AnimationName {
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+}
+@keyframes AnimationName {
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+}
+        
+           </style>

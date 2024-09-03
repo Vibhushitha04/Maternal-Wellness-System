@@ -1,0 +1,91 @@
+{% extends 'user_nav.html' %}
+{% load static %}
+{% block body %}
+<html>
+<div class="container mt-5">
+    <h2 class="text-center">PROFILE</h2>
+    <hr><hr><br>
+    <div class="row">
+        <div class="col-md-6">
+            <h5><b>Full Name : </b></h5>
+        </div>
+        <div class="col-md-6" style="text-transform: capitalize;">
+            <h5>{{data.user.first_name}} {{data.user.last_name}}</h5>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-md-6">
+            <h5><b>PICME Id : </b></h5>
+        </div>
+        <div class="col-md-6">
+            <h5>{{data.user.username}}</h5>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-md-6">
+            <h5><b>Contact : </b></h5>
+        </div>
+        <div class="col-md-6">
+            <h5>{{data.contact}}</h5>
+        </div>
+    </div>
+    <hr>
+    <!-- <div class="row">
+        <div class="col-md-6">
+            <h5><b>Branch : </b></h5>
+        </div>
+        <div class="col-md-6">
+            <h5>{{data.branch}}</h5>
+        </div>
+    </div>
+    <hr> -->
+    <div class="row">
+        <div class="col-md-6">
+            <h5><b>Role : </b></h5>
+        </div>
+        <div class="col-md-6">
+            <h5>{{data.role}}</h5>
+        </div>
+    </div><br><hr><br>
+    <a class="bb btn btn-primary" href="{% url 'edit_profile' %}">Edit Profile</a>
+    <br><hr>
+    <a class="bb btn btn-primary" href="{% url 'changepassword' %}">Change Password</a>
+</div>
+</html>
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@500&display=swap');
+    .container mt-5{
+        background: rgba( 255, 255, 255, 0.35 );
+box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+backdrop-filter: blur( 11px );
+-webkit-backdrop-filter: blur( 11px );
+border-radius: 10px;
+border: 1px solid rgba( 255, 255, 255, 0.18 );
+    }
+body{
+    background-image: url("https://images.pexels.com/photos/7116587/pexels-photo-7116587.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2");
+  font-family: 'Raleway', sans-serif;
+  
+background-attachment: fixed;
+   
+-webkit-animation: AnimationName 50s ease infinite;
+    animation: AnimationName 50s ease infinite;
+}
+
+@-webkit-keyframes AnimationName {
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+}
+@keyframes AnimationName {
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+}
+
+</style>
+
+{% endblock %}

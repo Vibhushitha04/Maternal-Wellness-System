@@ -1,0 +1,462 @@
+{% extends 'user_nav.html' %}
+{% load static %}
+{% block body %}
+<style>
+
+@-webkit-keyframes fade {
+  from {opacity: .4}
+  to {opacity: 1}
+}
+
+@keyframes fade {
+  from {opacity: .4}
+  to {opacity: 1}
+}
+ /* {% comment %} On smaller screens, decrease text size {% endcomment %} */
+@media only screen and (max-width: 300px) {
+  .text {font-size: 11px}
+}
+</style>
+
+
+<title>
+    Expecting | Pregnancy Calculator</title>
+  
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no">
+    <meta http-equiv="refresh" content="86400">
+    <meta name="description" content="A slick pregnancy calculator for the mobile era"/>
+  
+    <link rel="icon" href="" type="image/x-icon">
+    <link rel="shortcut icon" href="favico.png" type="image/x-icon">
+    <link rel="apple-touch-icon" href="favico.png"/>
+  
+    <link rel="stylesheet" href="icomoon/style.css">
+    <link rel="stylesheet" href="main.css">
+  </head>
+  <body>
+    
+    <settings>
+      <section id="head">
+        <span>Customize</span>
+        <span id="closeSettings" class="icon-arrow-left2"></span>
+      </section>
+  
+      <section id="main">
+        <div>
+          <label for="inputDate">
+            <span id="inputDisplay"></span>
+          </label>
+          <input type="date" id="inputDate"><br><br>
+          <span class="date-label">Last Menstural Period</span><br>
+          <span class="date-desc">
+            Day one of your last menstrual period
+          </span>
+        </div>
+  
+        <hr>
+  
+        <div>
+          <label for="targetDate">
+            <span id="targetDisplay"></span>
+          </label>
+          <input type="date" id="targetDate"><br><br>
+          <span class="date-label">Future Date</span><br>
+          <span class="date-desc">
+            change to calculate for a future date instead of today.
+          </span>
+        </div>
+      </section>
+    </settings>
+  
+    <page>
+      <section id="head">
+        <span id="openSettings" class="icon-calendar"></span>
+      </section>
+  
+      <section id="main">
+        <div id="output">
+          <span id="outputType">WEEK</span><br>
+          <span id="outputMain"></span>
+          <span id="outputSub"></span> <br><br>
+          <div id="progress">
+            <div class="group">
+              <span id="dueDateLabel">DUE DATE</span>
+              <span id="dueDate"></span>
+            </div>
+            <div id="progressBg"></div>
+            <div id="progressFg"></div>
+          </div>
+        </div>
+      </section>
+  
+      <section id="footer">
+        
+      </section>
+    </page>
+
+<script>(function() {
+    'use strict';
+  
+    function $(s) {
+      return document.querySelector(s);
+    }
+    function openSettings() {
+      localStorage['state'] = document.body.dataset.state = 'settings';
+    }
+    function closeSettings() {
+      localStorage['state'] = 'page';
+      delete document.body.dataset.state;
+    }
+    function dateFormat(d) {
+      if (!d) {
+        return d;
+      }
+  
+      if (!(d instanceof Date)) {
+        d = new Date(parseInt(d));
+      }
+      return d.toISOString().split('T')[0];
+    }
+  
+    var
+    isTouch = 'ontouchstart' in window,
+    click = isTouch ? 'touchend' : 'click',
+  
+    now = new Date(),
+    strToday = dateFormat(now),
+  
+    oneDayInMs = 24 * 60 * 60 * 1000,
+  
+    pregnancyInWeeks = 40,
+    pregnancyInDays = pregnancyInWeeks * 7,
+  
+    elements = {
+      inputDate: $('#inputDate'),
+      inputDisplay: $('#inputDisplay'),
+  
+      targetDate: $('#targetDate'),
+      targetDisplay: $('#targetDisplay'),
+  
+      output: $('#output'),
+      outputMain: $('#outputMain'),
+      outputSub: $('#outputSub'),
+      dueDate: $('#dueDate'),
+      progressFg: $('#progressFg'),
+  
+      openSettings: $('#openSettings'),
+      closeSettings: $('#closeSettings')
+    };
+  
+    function initDate(input, display) {
+      if (isTouch) {
+        display.addEventListener(click, function() {
+          input.focus();
+        });
+      }
+  
+      input.addEventListener('change', function() {
+        display.textContent = localStorage[input.id] = input.value;
+        if (isTouch && input.value === strToday) {
+          display.textContent = 'Today';
+        }
+        calc();
+      });
+    }
+  
+    function init() {
+      document.body.dataset.isTouch = isTouch;
+  
+      // state
+      if (!localStorage['state'] || localStorage['state'] === 'settings') {
+        openSettings();
+      }
+  
+      // input date: use location.search or localStorage else today
+      var iDate = dateFormat((/i=(\d+)/.exec(location.search)||[])[1]);
+      elements.inputDate.value = elements.inputDisplay.textContent =
+        iDate || localStorage['inputDate'] || strToday;
+  
+      // target date: use today
+      elements.targetDate.value = strToday;
+      elements.targetDisplay.textContent = 'Today';
+  
+      // settings panel
+      elements.openSettings.addEventListener(click, openSettings);
+      elements.closeSettings.addEventListener(click, closeSettings);
+      document.addEventListener('keydown', function(e) {
+        if (e.keyCode === 27 /* esc */) {
+          closeSettings();
+        }
+      });
+  
+      // date inputs
+      initDate(elements.inputDate, elements.inputDisplay);
+      initDate(elements.targetDate, elements.targetDisplay);
+    }
+  
+    function calc() {
+      var
+      t1 = (new Date(elements.inputDate.value)).getTime(),
+      t2 = (new Date(elements.targetDate.value)).getTime(),
+  
+      dueDate = new Date(t1 + pregnancyInWeeks * 7 * oneDayInMs),
+  
+      delta = (t2 - t1) / (oneDayInMs),
+      weeks = parseInt(delta / 7),
+      days = delta % 7;
+  
+      elements.outputMain.textContent = weeks || 0;
+      elements.outputSub.textContent = days ?
+        ('+ {#days} ' + (days > 1 ? 'DAYS' : 'DAY')).replace('{#days}', days) : '';
+  
+      elements.dueDate.textContent = dueDate.toLocaleDateString();
+      elements.progressFg.style.width =
+        parseInt(delta / pregnancyInDays * 100) + '%';
+    }
+  
+    init();
+    calc();
+  
+  })();
+  
+  
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-38103508-4', 'amirnissim.github.io');
+  ga('send', 'pageview');</script>
+
+
+<style>
+    /* {% comment %} @import url(http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700); {% endcomment %} */
+
+html, body {
+margin: 0;
+padding: 0;
+height: 100%;
+}
+
+body {
+font-weight: 300;
+font-size: 10px;
+background-image: url("https://images.pexels.com/photos/7116587/pexels-photo-7116587.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2");
+  font-family: 'Raleway', sans-serif;
+  
+background-attachment: fixed;
+   
+-webkit-animation: AnimationName 50s ease infinite;
+    animation: AnimationName 50s ease infinite;
+}
+
+@-webkit-keyframes AnimationName {
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+}
+@keyframes AnimationName {
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+}
+
+body[data-state="settings"] settings {
+transform: translateX(0);
+-webkit-transform: translateX(0);
+}
+body[data-state="settings"] page {
+opacity: 1;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+font-size: 1.2rem;
+}
+
+.group:after {
+content: "";
+clear: both;
+display: table;
+}
+
+#head {
+padding: 15px;
+}
+
+#openSettings,
+#closeSettings {
+cursor: pointer;
+padding: 15px;
+position: relative;
+}
+#openSettings {
+right: 15px;
+}
+#closeSettings {
+left: 15px;
+}
+#inputDate,#targetDate{
+background: rgba( 255, 255, 255, 0.35 );
+box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+backdrop-filter: blur( 11px );
+-webkit-backdrop-filter: blur( 11px );
+border-radius: 10px;
+border: 1px solid rgba( 255, 255,255,0.18);
+}
+
+#openSettings:active, #closeSettings:active,
+#inputDisplay, #targetDisplay {
+background-color:black;
+}
+
+settings {
+position: absolute;
+left: 300px;
+right: 0px;
+top: 150px;
+width: 80%;
+height: 60%;
+z-index: 1000;
+background: rgba( 255, 255, 255, 0.35 );
+box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+backdrop-filter: blur( 11px );
+-webkit-backdrop-filter: blur( 11px );
+border-radius: 10px;
+border: 1px solid rgba( 255, 255,255,0.18);
+transform: translateX(-100%);
+-webkit-transform: translateX(-100%);
+transition: 0.3s;
+-webkit-transition: 0.3s;
+max-width: 300px;
+}
+
+settings #head {
+text-align: right;
+}
+settings #head span:first-child {
+float: left;
+font-size: 1.4rem;
+position: relative;
+bottom: 5px;
+}
+
+settings #main {
+padding: 20px 20px 0;
+}
+settings #main hr {
+opacity: 0.3;
+margin: 35px 0;
+}
+settings #main label {
+display: block;
+font-size: 1.1rem;
+}
+settings #main .date-label {
+display: block;
+font-weight: bold;
+font-size: 0.8rem;
+padding-top: 2px;
+}
+settings #main .date-desc {
+display: block;
+font-size: 0.7rem;
+opacity: 0.75;
+padding-top: 2px;
+}
+
+page {
+display: flex;
+display: -webkit-flex;
+flex-direction: column;
+-webkit-flex-direction: column;
+margin: 0;
+height: 100%;
+position: relative;
+box-sizing: border-box;
+}
+
+page #main,
+page #footer {
+text-align: center;
+top:200px;
+left:500px;
+position:fixed;
+width: 250px;
+margin: 0 auto;
+}
+page #footer {
+padding-bottom: 20px;
+padding-top: 8px;
+}
+page #main {
+
+display: flex;
+display: -webkit-flex;
+align-items: center;
+-webkit-align-items: center;
+flex: 2;
+-webkit-flex: 2;
+
+}
+#main{
+    left: 100px;
+right: 0px;
+top: 100px;
+}
+#output {
+margin: 0 auto;
+display: block;
+font-size: 1.3rem;
+color: black;
+}
+#outputMain {
+display: block;
+font-weight: 600;
+font-size: 12rem;
+line-height: 1;
+}
+#outputType {
+display: block;
+margin-bottom: -10px;
+font-weight: 700;
+}
+#outputSub {
+display: block;
+margin-top: 10px;
+}
+
+#dueDateLabel {
+float: left;
+padding-bottom: 5px;
+}
+#dueDate {
+float: right;
+}
+#progressBg {
+width: 100%;
+border-bottom: 2px solid #F0F0F0;
+}
+#progressFg {
+border-bottom: 2px solid rgb(255, 189, 215);
+position: relative;
+bottom: 2px;;
+}
+
+/*  for touch devices:
+*  show nice UI instead of native input[date] elements
+**/
+#inputDisplay, #targetDisplay {
+display: none;
+}
+
+body[data-is-touch="true"] #inputDisplay,
+body[data-is-touch="true"] #targetDisplay {
+display: inline;
+}
+body[data-is-touch="true"] input[type="date"] {
+top: -1000px;
+position: absolute;
+left: 0;
+}
+</style>
+{% endblock %}

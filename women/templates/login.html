@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% block body %}
+
+{% ifequal error "no" %}
+<script>
+    alert('Logged In Successfully');
+    window.location=("{% url 'profile' %}");
+</script>
+{% endifequal %}
+
+{% ifequal error "yes" %}
+<script>
+    alert('Invalid Login Credentials, Try again');
+</script>
+{% endifequal %}
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@500&display=swap');
+  .doabout{
+      margin-top:30px;
+      padding-top: 10px;
+  }
+  input[type="text"]{
+    background: rgba( 255, 255, 255, 0.35 );
+box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+backdrop-filter: blur( 11px );
+-webkit-backdrop-filter: blur( 11px );
+border-radius: 10px;
+border: 1px solid rgba( 255, 255, 255, 0.18 );
+}
+input[type="password"]{
+    background: rgba( 255, 255, 255, 0.35 );
+box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+backdrop-filter: blur( 11px );
+-webkit-backdrop-filter: blur( 11px );
+border-radius: 10px;
+border: 1px solid rgba( 255, 255, 255, 0.18 );
+}
+input[type="checkbox"]{
+    background: rgba( 255, 255, 255, 0.35 );
+box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+backdrop-filter: blur( 11px );
+-webkit-backdrop-filter: blur( 11px );
+border-radius: 10px;
+border: 1px solid rgba( 255, 255, 255, 0.18 );
+}
+  body{
+  background-image: url("https://images.pexels.com/photos/7116587/pexels-photo-7116587.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2");
+  font-family: 'Raleway', sans-serif;
+  
+background-attachment: fixed;
+   
+-webkit-animation: AnimationName 50s ease infinite;
+    animation: AnimationName 50s ease infinite;
+}
+
+@-webkit-keyframes AnimationName {
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+}
+@keyframes AnimationName {
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+}
+</style>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-sm-6">
+            <h2 class="doabout text-center"><b>NEW USER</b></h2>
+            <hr>
+            <p class="text-center"><b>Create new Account,REGISTER</b>
+                <hr><hr><br>
+            <a href="{% url 'signup' %}"><button type="button" class="bb btn btn-primary text-center">CREATE NEW ACCOUNT</button></a><br><hr><hr>
+            </p>
+        </div>
+        <div class="col-sm-6">
+            <h2 class="doabout text-center"></i><b>LOGIN</b></h2>
+            <hr>
+            <p class="text-center"><b>Already have account,LOGIN</b>
+                <hr><hr><br>
+            <button type="button" class="bb btn btn-primary text-center">LOGIN</button><br><hr><hr>
+            </p>
+            <form action="" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                  <label for="email">PICME Id:</label>
+                  <input type="text" class="form-control" placeholder="Enter PICME Id" name="email">
+                </div>
+                <div class="form-group">
+                  <label for="pwd">Password:</label>
+                  <input type="password" class="form-control" placeholder="Enter password" name="pwd" id="logpassword">
+                </div>
+                
+                <div class="form-group form-check">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" onclick="showPassword()"> Show Password
+                  </label>
+                </div>
+                <button type="submit" class="bb btn btn-primary">Submit</button>
+              </form>
+
+        </div>
+    </div>
+</div>
+<script>
+    function showPassword() {
+            var x = document.getElementById("logpassword");
+            if (x.type === "password") {
+                x.type = "text";
+            } else {
+                x.type = "password";
+            }
+        }
+</script>
+
+{% endblock %}

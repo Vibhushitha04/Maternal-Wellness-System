@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% block body %}
+
+{% ifequal error "no" %}
+<script>
+    alert('SignUp Successfull');
+    window.location=("{% url 'login' %}");
+</script>
+{% endifequal %}
+
+{% ifequal error "yes" %}
+<script>
+    alert('Something went Wrong, Try again');
+</script>
+{% endifequal %}
+
+<style>
+     @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@500&display=swap');
+    .doabout{
+        margin-top:30px;
+        padding-top: 10px;
+    }
+    .bgg{
+        background: linear-gradient(to right top, rgba(229, 231, 178, 0.767), rgba(178, 233, 106, 0.7), rgba(221, 139, 191, 0.7));
+        border-radius: 10px;
+        left:340px;
+        position:absolute;
+        background: rgba( 255, 255, 255, 0.35 );
+box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+backdrop-filter: blur( 11px );
+-webkit-backdrop-filter: blur( 11px );
+border-radius: 10px;
+border: 1px solid rgba( 255, 255, 255, 0.18 );
+height: 950px;
+    }
+    .bb btn btn-primary{
+        left: 150px;
+        position:absolute;
+    }
+   
+    body{
+        background-image: url("https://images.pexels.com/photos/7116587/pexels-photo-7116587.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2");
+  font-family: 'Raleway', sans-serif; 
+  background-attachment: fixed;
+-webkit-animation: AnimationName 50s ease infinite;
+    animation: AnimationName 50s ease infinite;
+}
+
+@-webkit-keyframes AnimationName {
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+}
+@keyframes AnimationName {
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+}
+::-webkit-scrollbar{
+    display:none;
+}
+
+</style>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-sm-6">
+            <!-- <img src="{% static 'images/sign-up.png' %}" style="width:80%"> -->
+        </div>
+        <div class="col-sm-6 bgg">
+            <h2 class="doabout text-center"></i><b>CREATE ACCOUNT</b></h2>
+            <hr>
+            <p class="text-center"><b>If dont have account,REGISTER</b>
+                <hr><hr><br>
+            </p>
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="fname">First Name:</label>
+                    <input type="text" class="form-control" placeholder="Enter first name" name="fname">
+                </div>
+                <div class="form-group">
+                    <label for="lname">Last Name:</label>
+                    <input type="text" class="form-control" placeholder="Enter last name" name="lname">
+                </div>
+                 <div class="form-group">
+                    <label for="contact">Contact:</label>
+                    <input type="text" class="form-control" placeholder="Enter contact number" name="contact">
+                 </div>
+                <div class="form-group">
+                  <label for="email">PICME Id:</label>
+                  <input type="text" class="form-control" placeholder="Enter PICME Id" name="email">
+                </div>
+                <div class="form-group">
+                  <label for="pwd">Password:</label>
+                  <input type="password" class="form-control" placeholder="Enter password" name="pwd" id="logpassword">
+                </div>
+                <div class="form-group">
+                    <label for="role">Role:</label>
+                    <select class="form-control" placeholder="Enter Role" name="role">
+                        <option value="Women">Women</option>
+                        <option value="Doctor">Doctor</option>
+                    </select>
+                </div>
+                <div class="form-group form-check">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" onclick="showPassword()"> Show Password
+                  </label>
+                </div>
+                <div class="submit">
+                <button type="submit" class="bb btn btn-primary">SIGN UP</button><hr><hr>
+                </div>
+              </form>
+
+        </div>
+    </div>
+</div>
+<script>
+    function showPassword() {
+            var x = document.getElementById("logpassword");
+            if (x.type === "password") {
+                x.type = "text";
+            } else {
+                x.type = "password";
+            }
+        }
+</script>
+
+
+{% endblock %}

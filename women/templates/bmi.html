@@ -1,0 +1,155 @@
+{% extends 'user_nav.html' %}
+{% load static %}
+{% block body %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Maternal BMI Calculator</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+  <div class="bmi">
+	<h1>Maternal BMI Calculator</h1>
+	<form>
+		<label for="weight">Weight (kg):</label>
+		<input type="number" id="weight" name="weight" required><br><br>
+
+		<label for="height">Height (cm):</label>
+		<input type="number" id="height" name="height" required><br><br>
+
+		<label for="weeks">Weeks pregnant:</label>
+		<input type="number" id="weeks" name="weeks" required><br><br>
+
+		<button type="button" onclick="calculateBMI()">Calculate BMI</button><br><br>
+
+		<label for="bmi">Maternal BMI:</label>
+		<input type="number" id="bmi" name="bmi" readonly>
+	</form>
+  </div>
+  <div class="Bmi_calc" >
+    <table>
+        <tr>
+            <th>BMI </th>
+            <th>Nutritional Status</th>
+        </tr>
+
+        <tr>
+            <th> Below 18.5 </th>
+            <th> Underweight </th>
+        </tr>
+
+        <tr>
+            <th> 18.5 - 24.9 </th>
+            <th> Normal Weight </th>
+        </tr>
+
+        <tr>
+            <th> 25.0 - 29.9 </th>
+            <th> Pre - Obesity </th>
+        </tr>
+
+        <tr>
+            <th> 30.0 - 34.9 </th>
+            <th> Obesity Class I </th>
+        </tr>
+
+        <tr>
+            <th> 35.0 - 39.9 </th>
+            <th> Obesity Class II </th>
+        </tr>
+
+        <tr>
+            <th> Above 40 </th>
+            <th> Obesity Class III </th>
+        </tr>
+    </table>
+    </div>
+    </body></html>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@500&display=swap');
+   .bmi{
+     background: rgba( 255, 255, 255, 0.35 );
+   box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+   backdrop-filter: blur( 11px );
+   -webkit-backdrop-filter: blur( 11px );
+   border-radius: 10px;
+   border: 1px solid rgba( 255, 255, 255, 0.18 );
+   text-align: center;
+   width:800px;
+     left:330px;
+     top:90px;
+     position: fixed;
+   }
+   table, th, td {
+  border: 1px solid black;
+  border-radius: 20px;
+width: 800px;
+height: 10px;
+   }
+   input[type=number]{
+    background: rgba( 255, 255, 255, 0.35 );
+   box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+   backdrop-filter: blur( 11px );
+   -webkit-backdrop-filter: blur( 11px );
+   border-radius: 10px;
+   border: 1px solid rgba( 255, 255, 255, 0.18 );
+   }
+   button[type=button]{
+    background: rgba( 255, 255, 255, 0.35 );
+   box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+   backdrop-filter: blur( 11px );
+   -webkit-backdrop-filter: blur( 11px );
+   border-radius: 10px;
+   border: 1px solid rgba( 255, 255, 255, 0.18 );
+   }
+   .Bmi_calc{
+     background: rgba( 255, 255, 255, 0.35 );
+   box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+   backdrop-filter: blur( 11px );
+   -webkit-backdrop-filter: blur( 11px );
+   border-radius: 0px;
+   border: 1px solid rgba( 255, 255, 255, 0.18 );
+   text-align: center;
+   width:800px;
+   height:190px;
+     left:330px;
+     top:470px;
+     position: fixed;
+     text-align: center;
+   }
+    
+   body{
+    background-image: url("https://images.pexels.com/photos/7116587/pexels-photo-7116587.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2");
+  font-family: 'Raleway', sans-serif;
+-webkit-animation: AnimationName 50s ease infinite;
+    animation: AnimationName 50s ease infinite;
+}
+
+@-webkit-keyframes AnimationName {
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+}
+@keyframes AnimationName {
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+}
+   
+   </style>
+	<script>
+		function calculateBMI() {
+			var weight = parseFloat(document.getElementById("weight").value);
+			var height = parseFloat(document.getElementById("height").value);
+			var weeks = parseInt(document.getElementById("weeks").value);
+			var bmi = weight / ((height/100) * (height/100));
+
+			if (weeks < 20) {
+				alert("This calculator is intended for women who are at least 20 weeks pregnant.");
+			} else {
+				document.getElementById("bmi").value = bmi.toFixed(2);
+			}}
+	</script>
+
+{% endblock %} 
