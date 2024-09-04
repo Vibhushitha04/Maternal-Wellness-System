@@ -3,7 +3,7 @@
 <p align="center">
 </p>
 
-<a href="https://hack36.com"> <img src="http://bit.ly/BuiltAtHack36" height=20px> </a>
+
 
 
 ## Introduction:
